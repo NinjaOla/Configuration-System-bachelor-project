@@ -1,0 +1,189 @@
+﻿@model WorksoftConfigSystem.Models.EditViewModel
+
+@{
+    ViewBag.Title = "Functions";
+}
+
+@using (Html.BeginForm()) {
+
+<div class="row justify-content-md-center">
+    <div class="col-sm-1"></div>
+    <div class="col-md-5">
+
+
+        <table class="table table-condensed table-striped table-bordered">
+            <caption><h2 id="heading">@Model.title</h2></caption>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                    <th>Comment</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                @if(Model.ConfigurableFunctionsList.Count==0 && Model.SettingsList.Count==0) {
+                   <tr><td>ERROR: NO SETTINGS FOUND IN ConfigurationCategoriesID!</td></tr>
+                
+                }
+                <!-- CONFIGURABLE FUNCTIONS -->
+                @for (int i = 0; i < Model.ConfigurableFunctionsList.Count; i++) {
+                    <tr id="@i conf" onclick="toggleConfLongComment(@i)" class="table-row">
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.ConfigurableFunctionsList[i].Description)
+                            @Html.HiddenFor(modelItem => modelItem.ConfigurableFunctionsList[i].Description)
+                            @Html.HiddenFor(modelItem => modelItem.ConfigurableFunctionsList[i].ConfigurableFunctionID)
+                            @Html.HiddenFor(modelItem => modelItem.ConfigurableFunctionsList[i].LongComment, new { @id = "confLongComment" + i })
+                            @Html.HiddenFor(modelItem => modelItem.ConfigurableFunctionsList[i].ConfigurationDataTypesID)
+                            @Html.HiddenFor(modelItem => modelItem.ConfigurableFunctionsList[i].Comments)
+                        </td>
+                        
+                        @if (Model.ConfigurableFunctionsList[i].ConfigurationDataTypesID == 6) {
+                           <!--RADIO BUTTON med tall -->
+                        <td>
+                            @Html.RadioButtonFor(modelItem => modelItem.ConfigurableFunctionsList[i].ActivationCode, "1") <label>On</label>
+                            @Html.RadioButtonFor(modelItem => modelItem.ConfigurableFunctionsList[i].ActivationCode, "0") <label>Off</label>
+                        </td>
+                        }
+
+                        else if (Model.ConfigurableFunctionsList[i].ConfigurationDataTypesID == 7) {
+                            <!--RADIO BUTTON med true/false -->
+                        <td>
+                            @Html.RadioButtonFor(modelItem => modelItem.ConfigurableFunctionsList[i].ActivationCode, "True") <label>On</label>
+                            @Html.RadioButtonFor(modelItem => modelItem.ConfigurableFunctionsList[i].ActivationCode, "False") <label>Off</label>
+                        </td>
+                        }
+
+                        else if (Model.ConfigurableFunctionsList[i].ConfigurationDataTypesID == 5) {
+                            <!--dropdownList -->
+                             <td>
+                                 @Html.DropDownListFor(modelItem => modelItem.ConfigurableFunctionsList[i].ActivationCode, Model.CountryList, "--Select Country--")
+                            </td>
+                        }
+
+                        else {
+                        <td>
+                            @Html.EditorFor(modelItem => modelItem.ConfigurableFunctionsList[i].ActivationCode)
+                        </td>
+                        }
+
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.ConfigurableFunctionsList[i].Comments)
+                        </td>
+                    </tr>
+                    }
+               
+                <!--FUNCTIONS-->
+                   @for (int i = 0; i < Model.SettingsList.Count; i++) {
+                    <!-- NAME -->
+                       <tr id="@i func" onclick="toggleSettingLongComment(@i)" class="table-row">
+                           <td>
+                               @Html.DisplayTextFor(modelItem => modelItem.SettingsList[i].Name)
+                               @Html.HiddenFor(modelItem => modelItem.SettingsList[i].Name)
+                               @Html.HiddenFor(modelItem => modelItem.SettingsList[i].SettingId)
+                               @Html.HiddenFor(modelItem => modelItem.SettingsList[i].SubIndex)
+                               @Html.HiddenFor(modelItem => modelItem.SettingsList[i].ConfigurationDataTypesID)
+                               @Html.HiddenFor(modelItem => modelItem.SettingsList[i].ConfigurationCategoriesID)
+                               @Html.HiddenFor(modelItem => modelItem.SettingsList[i].LongComment, new { @id = "funcLongComment" + i })
+                               @Html.HiddenFor(modelItem => modelItem.SettingsList[i].Comments)
+                           </td>
+
+                           <!--VALUE-->
+                           @if (Model.SettingsList[i].ConfigurationDataTypesID == 6) {
+                              <!--RADIO BUTTON med tall -->
+                             <td>
+                                  @Html.RadioButtonFor(modelItem => modelItem.SettingsList[i].Value,"1") <label>On</label>
+                                  @Html.RadioButtonFor(modelItem => modelItem.SettingsList[i].Value,"0") <label>Off</label>
+                             </td>
+                           }
+
+                           else if (Model.SettingsList[i].ConfigurationDataTypesID == 7) {
+                              <!--RADIO BUTTON med true/false -->
+                            <td>
+                                @Html.RadioButtonFor(modelItem => modelItem.SettingsList[i].Value, "True") <label>On</label>
+                                @Html.RadioButtonFor(modelItem => modelItem.SettingsList[i].Value, "False") <label>Off</label>
+                            </td>
+                           }
+
+                           else if (Model.SettingsList[i].ConfigurationDataTypesID == 5) {
+                              <!-- dropdownlist with countries-->
+                            <td>
+                                <!-- Check if the value is true to a value in country list, then sets it as selected.-->
+                                @for(int pos = 0; pos< Model.CountryList.Count; pos++) {
+                                    if (Model.SettingsList[i].Value.Equals(Model.CountryList[pos].Value)) {
+                                        Model.CountryList[pos].Selected = true;
+                                    }
+                                }
+                                @Html.DropDownListFor(modelItem => modelItem.SettingsList[i].Value, Model.CountryList)
+                                
+                            </td>
+                           }
+
+                           else {
+                           <td>
+                               @Html.EditorFor(modelItem => modelItem.SettingsList[i].Value)
+                           </td>
+                           }
+                        <!--COMMENTS-->
+                           <td>
+                               @Html.DisplayFor(modelItem => modelItem.SettingsList[i].Comments)      
+                           </td>
+                      </tr>
+                   }
+                
+            </tbody>
+        </table>
+        <input type="submit" value="Save" class="btn btr-danger btn-submit"/>
+        
+    </div>
+    <div class="col-lg-2 col-lg-offset-1 staticBox" style="padding-top:3.2%;" >
+        <div class="commentBox" id="longComment">
+            
+        THIS IS A VERY LONG EXAMPLE COMMENT TO CHECK FOR OVERLAPPING
+        THIS IS A VERY LONG EXAMPLE COMMENT TO CHECK FOR OVERLAPPING
+        THIS IS A VERY LONG EXAMPLE COMMENT TO CHECK FOR OVERLAPPING
+        THIS IS A VERY LONG EXAMPLE COMMENT TO CHECK FOR OVERLAPPING
+        THIS IS A VERY LONG EXAMPLE COMMENT TO CHECK FOR OVERLAPPING
+        THIS IS A VERY LONG EXAMPLE COMMENT TO CHECK FOR OVERLAPPING
+        THIS IS A VERY LONG EXAMPLE COMMENT TO CHECK FOR OVERLAPPING
+        THIS IS A VERY LONG EXAMPLE COMMENT TO CHECK FOR OVERLAPPING
+        THIS IS A VERY LONG EXAMPLE COMMENT TO CHECK FOR OVERLAPPING
+        THIS IS A VERY LONG EXAMPLE COMMENT TO CHECK FOR OVERLAPPING
+        THIS IS A VERY LONG EXAMPLE COMMENT TO CHECK FOR OVERLAPPING
+        THIS IS A VERY LONG EXAMPLE COMMENT TO CHECK FOR OVERLAPPING
+        THIS IS A VERY LONG EXAMPLE COMMENT TO CHECK FOR OVERLAPPING
+
+        </div>
+    </div>
+</div>
+}
+
+<!--Get ID from what you click at, use that number/id to get correct value/position in list for the long comment-->
+
+@section Scripts
+    {
+
+<script>
+
+
+function toggleConfLongComment(id) {
+    console.log(id);
+    var info = document.getElementById("confLongComment"+id).value;
+    console.log(info);
+    document.getElementById("longComment").innerHTML = info;
+    
+ 
+}
+
+function toggleSettingLongComment(id) {
+    console.log(id);
+    var info = document.getElementById("funcLongComment"+id).value;
+    console.log(info);
+    document.getElementById("longComment").innerHTML = info;
+
+}
+
+</script>
+
+
+}

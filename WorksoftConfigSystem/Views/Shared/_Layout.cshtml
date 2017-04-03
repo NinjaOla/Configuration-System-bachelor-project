@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/datatables") 
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                
+            </div>
+
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Import</a></li>
+                            <li><a href="#">Export</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                
+                
+                <form class="navbar-form navbar-right">
+                    <ul class="nav navbar-nav navbar-center">
+                        <li><img src="http://i.imgur.com/vOupaLt.png"></li>
+                    </ul>
+                    
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search" />
+                    </div>
+                    <button type="submit" class="btn btn-default btn-submit">Search!</button>
+                </form>
+            </div>
+
+ 
+    </nav>
+
+    @{Html.RenderAction("partSideBar", "Home"); }
+ 
+    <div class="container-fluid body-content">
+        @RenderBody()
+    </div>
+   
+  
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

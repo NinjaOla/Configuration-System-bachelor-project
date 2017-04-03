@@ -1,0 +1,38 @@
+﻿@model WorksoftConfigSystem.Models.CategoryMenuViewModel
+<!--HTML for left side -->
+
+@{ 
+   Layout = null;
+}
+<div class="navbar-left-toggle navbar-inverse navbar-fixed-left din-font" id="sidebar">
+    <a class="navbar-brand" href="#">Categories</a>
+
+    <ul class="nav navbar-nav" style="margin-left: auto">
+ 
+
+        @for (int i = 0; i < Model.CategoryList.Count; i++) {
+
+        <li>
+            <a class="btn-category btn-primary din-font" href="/home/functions/@Model.CategoryList[i].ConfigurationCategoriesID" id="@i">@Model.CategoryList[i].ConfigurationCategoryDescription</a>
+        </li>
+        }
+ 
+
+
+
+
+    </ul>
+</div>
+<div class="container">
+    <div class="row">
+        
+
+    </div>
+</div>
+@section Scripts {
+    
+    <script>
+
+    </script>
+    
+    }
